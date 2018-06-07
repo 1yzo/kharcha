@@ -13,6 +13,8 @@ export default class ExpenseForm extends React.Component {
             note: props.expense ? props.expense.note : '',
             amount: props.expense ? (props.expense.amount).toString() : '',
             createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
+            recipient: props.expense ? props.expense.recipient : '',
+            transactionType: props.expense ? props.expense.transactionType : 'transfer',
             calendarFocuesd: false,
             error: ''
         };
@@ -31,6 +33,8 @@ export default class ExpenseForm extends React.Component {
         } else {
             this.setState(() => ({ error: '' }));
             this.props.onSubmit({
+                transactionType: this.state.transactionType,
+                recipient: this.state.recipient,
                 description: this.state.description,
                 amount: parseFloat(this.state.amount, 10),
                 createdAt: this.state.createdAt.valueOf(),
@@ -45,6 +49,11 @@ export default class ExpenseForm extends React.Component {
         }
     }
 
+    onRecipientChange = (e) => {
+        const recipient = e.target.value;
+        this.setState(() => ({ recipient }));
+    }
+    
     onDescriptionChange = (e) => {
         const description = e.target.value;
         this.setState(() => ({ description }));
@@ -62,15 +71,33 @@ export default class ExpenseForm extends React.Component {
         }
     }
     
+    onTransactionTypeChange = (e) => {
+        const transactionType = e.target.value;
+        this.setState(() => ({ transactionType }));
+    };
+    
     render() {
         return (
             <form className="form" onSubmit={this.onSubmit}>
                 {this.state.error && <p className="form__error">{this.state.error}</p>}
+                <select className="select" value={this.state.transactionType} onChange={this.onTransactionTypeChange}>
+                    <option value="transfer">Transfer</option>
+                    <option value="purchase">Purchase</option>
+                </select>
+                {this.state.transactionType === 'transfer' &&
+                <input 
+                    className="text-input"
+                    type="text"
+                    placeholder="Recipient"
+                    autoFocus
+                    onChange={this.onRecipientChange}
+                    value={this.state.recipient}
+                />
+                }
                 <input 
                     className="text-input"
                     type="text"
                     placeholder="Description"
-                    autoFocus
                     onChange={this.onDescriptionChange}
                     value={this.state.description}
                 />
