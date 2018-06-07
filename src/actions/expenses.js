@@ -17,8 +17,8 @@ export const startAddExpense = (expenseData = {}) => {
             amount = 0,
             createdAt = 0
         } = expenseData;
+        console.log(amount, typeof amount, description);
         const expense = { recipient, transactionType, description, note, amount, createdAt };
-
         return database.ref(`users/${getState().auth.uid}/expenses`).push(expense).then((ref) => {
             dispatch(addExpense({
                 id: ref.key,
