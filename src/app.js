@@ -11,6 +11,7 @@ import getVisibleExpenses from './selectors/expenses';
 import moment from 'moment';
 import { firebase } from './firebase/firebase';
 import expenses from './tests/fixtures/expenses';
+import LoadingPage from './components/LoadingPage';
 
 const store = configureStore();
 
@@ -27,7 +28,7 @@ const renderApp = () => {
     }
 };
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 
 
