@@ -2,14 +2,15 @@ import moment from 'moment';
 // Get visible expenses
 
 //selectExpenses
-export default (expenses, { text, sortBy, startDate, endDate }) => {
+export default (expenses, { text, sortBy, startDate, endDate, includeTransfers }) => {
     return expenses.filter((expense) => {
         const createdAtMoment = moment(expense.createdAt);
         const startDateMatch =  startDate ? startDate.isSameOrBefore(createdAtMoment, 'day') : true;
         const endDateMatch = endDate ? endDate.isSameOrAfter(createdAtMoment, 'day') : true;
         const textMatch = expense.description.toLowerCase().includes(text.toLowerCase());
+        const transactionTypeMatch = includeTransfers ? expense.transactionType !== 'transfer' : true;
 
-        return startDateMatch && endDateMatch && textMatch;
+        return startDateMatch && endDateMatch && textMatch && transactionTypeMatch;
     }).sort((a, b) => {
         if (sortBy === 'date') {
             return a.createdAt < b.createdAt ? 1 : -1;

@@ -4,7 +4,8 @@ const filtersReducerDefaultState = {
     text: '',
     sortBy: 'date',
     startDate: moment().startOf('month'),
-    endDate: moment().endOf('month')
+    endDate: moment().endOf('month'),
+    includeTransfers: true
 };
 
 export default (state = filtersReducerDefaultState, action) => {
@@ -30,10 +31,15 @@ export default (state = filtersReducerDefaultState, action) => {
                 startDate: action.date
             };
         case 'SET_END_DATE':
-         return {
-             ...state,
-             endDate: action.date
-         };
+            return {
+                ...state,
+                endDate: action.date
+            };
+        case 'SET_INCLUDE_TRANSFERS':
+            return {
+                ...state,
+                includeTransfers: !state.includeTransfers
+            }
         default:
             return state;
     }
